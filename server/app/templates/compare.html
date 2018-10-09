@@ -1,21 +1,21 @@
 {% extends "base.html" %}
 {% block title %}Home{% endblock %}
 {% block body %}
-<div class="container text-center">
+<div class="container">
 		
 	<form class="was-validated" method=POST enctype=multipart/form-data action="{{ url_for('upload') }}">
 		<div class="row mb-4">
 			<div class="col-md-4">  
 			  <div class="custom-file mb-3">
-			    <input type="file" class="custom-file-input" id="imageFile" required name="image" >
-			    <label class="custom-file-label" for="imageFile" id="imageLabel">Original Image...</label>
+			    <input type="file" class="custom-file-input" id="imageFileOriginal" required name="image" >
+			    <label class="custom-file-label" for="imageFileOriginal" id="imageLabelOriginal">Original Image...</label>
 			  </div>
 			</div>
 
 			<div class="col-md-4">
 			  <div class="custom-file mb-3">
-			    <input type="file" class="custom-file-input" id="imageFile" required name="image" >
-			    <label class="custom-file-label" for="imageFile" id="imageLabel">Stegano Image...</label>
+			    <input type="file" class="custom-file-input" id="imageFileStegano" required name="image" >
+			    <label class="custom-file-label" for="imageFileStegano" id="imageLabelStegano">Stegano Image...</label>
 			  </div>
 			</div>
 
@@ -35,10 +35,13 @@
 	<div class="row mb-4">
 		<div class="col-md-6 col-sm-12 mb-4">
 
-			<div class="card" style="width: 100%;">
-			  <img class="card-img-top" src="{{ url_for('static', filename='assets/noimage.png') }}" alt="Card image cap" id="imageView">
+			<div class="card" style="width: 80;">
+			  <img class="card-img-top" src="{{ url_for('static', filename='assets/noimage.png') }}" alt="Card image cap" id="imageViewOriginal">
 			  <div class="card-body">
-				<h5>ORIGINAL IMAGE</h5>
+			  	<div class="text-center">
+					<h5>ORIGINAL IMAGE</h5>
+			  	</div>
+
 
 				<table class="table table-hover">
 				  <tbody>
@@ -61,10 +64,12 @@
 		</div>
 
 		<div class="col-md-6 col-sm-12 mb-4">
-			<div class="card" style="width: 100%;">
-			  <img class="card-img-top" src="{{ url_for('static', filename='assets/noimage.png') }}" alt="Card image cap" id="imageView">
+			<div class="card" style="width: 80;">
+			  <img class="card-img-top" src="{{ url_for('static', filename='assets/noimage.png') }}" alt="Card image cap" id="imageViewStegano">
 			  <div class="card-body">
-				<h5>STEGANO IMAGE</h5>
+			  	<div class="text-center">
+					<h5>STEGANO IMAGE</h5>
+			  	</div>
 
 				<table class="table table-hover">
 				  <tbody>
