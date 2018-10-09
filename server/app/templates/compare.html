@@ -1,15 +1,96 @@
 {% extends "base.html" %}
 {% block title %}Home{% endblock %}
 {% block body %}
-<div class="jumbotron jumbotron-fluid text-center">
+<div class="container text-center">
+	<div class="row mb-4">
+		<div class="col-md-4">
+			<form class="was-validated " method=POST enctype=multipart/form-data action="{{ url_for('upload') }}">
+			  
+			  <div class="custom-file mb-3">
+			    <input type="file" class="custom-file-input" id="imageFile" required name="image" >
+			    <label class="custom-file-label" for="imageFile" id="imageLabel">Original Image...</label>
+			  </div>
+			 </form>
+		</div>
 
-	<div class="container">
-		<form method=POST enctype=multipart/form-data action="{{ url_for('upload') }}">
-    		<input type=file name=file>
-    		<input type="submit" value="Upload">
-		</form>		  
+		<div class="col-md-4">
+			<form class="was-validated " method=POST enctype=multipart/form-data action="{{ url_for('upload') }}">
+			  
+			  <div class="custom-file mb-3">
+			    <input type="file" class="custom-file-input" id="imageFile" required name="image" >
+			    <label class="custom-file-label" for="imageFile" id="imageLabel">Stegano Image...</label>
+			  </div>
+			 </form>
+		</div>
+		<div class="col-md-4">
+			<div class="row">
+				<div class="col">
+					<button type="button" class="btn btn-primary btn-block">Compare</button>
+				</div>
+				<div class="col">
+					<button type="button" class="btn btn-danger btn-block">Reset</button>
+				</div>
+			</div>
+			
+		</div>
+
 	</div>
-	<h1>{{key}}</h1>
+	<div class="row mb-4">
+		<div class="col-md-6 col-sm-12 mb-4">
+
+			<div class="card" style="width: 100%;">
+			  <img class="card-img-top" src="{{ url_for('static', filename='assets/noimage.png') }}" alt="Card image cap" id="imageView">
+			  <div class="card-body">
+				<h5>ORIGINAL IMAGE</h5>
+
+				<table class="table table-hover">
+				  <tbody>
+				    <tr>
+				      <td>Size	</td>
+				      <td>250 Kb</td>
+				    </tr>
+				    <tr>
+				      <td>Original	</td>
+				      <td>100%</td>
+				    </tr>
+				    <tr>
+				      <td colspan="2">Persentase 99%</td>
+				    </tr>
+				  </tbody>
+				</table>
+
+			  </div>
+			</div>
+		</div>
+
+		<div class="col-md-6 col-sm-12 mb-4">
+			<div class="card" style="width: 100%;">
+			  <img class="card-img-top" src="{{ url_for('static', filename='assets/noimage.png') }}" alt="Card image cap" id="imageView">
+			  <div class="card-body">
+				<h5>STEGANO IMAGE</h5>
+
+				<table class="table table-hover">
+				  <tbody>
+				    <tr>
+				      <td>Size	</td>
+				      <td>250 Kb</td>
+				    </tr>
+				    <tr>
+				      <td>Original	</td>
+				      <td>98%</td>
+				    </tr>
+				    <tr>
+				      <td colspan="2">Persentase 99%</td>
+				    </tr>
+				  </tbody>
+				</table>
+
+			  </div>
+			</div>
+		</div>
+
+	</div>
+
 
 </div>
 {% endblock %}
