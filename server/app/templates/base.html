@@ -34,13 +34,13 @@
     <script>
 
       //SHOW SELECTED FILE FROM LOCAL
-      function renderImage(file){
+      function renderImage(file,view){
         const reader = new FileReader()
 
         // inject an image with the src url
         reader.onload = function(event) {
           the_url = event.target.result
-          const img = document.getElementById('imageView')
+          const img = document.getElementById(view)
           img.src = the_url
         }
           // when the file is read it triggers the onload event above.
@@ -52,14 +52,29 @@
           imageLabel.lastChild.data=this.files[0].name
 
           // grab the first image in the FileList object and pass it to the function
-          renderImage(this.files[0])
+          renderImage(this.files[0],'imageView')
+      });
+
+      $("#imageFileOriginal").change(function() {
+          const imageLabel = document.getElementById('imageLabelOriginal')
+          imageLabel.lastChild.data=this.files[0].name
+
+          // grab the first image in the FileList object and pass it to the function
+          renderImage(this.files[0],'imageViewOriginal')
+      });
+
+      $("#imageFileStegano").change(function() {
+          const imageLabel = document.getElementById('imageLabelStegano')
+          imageLabel.lastChild.data=this.files[0].name
+
+          // grab the first image in the FileList object and pass it to the function
+          renderImage(this.files[0],'imageViewStegano')
       });
 
       $("#textFile").change(function() {
           const textLabel = document.getElementById('textLabel')
           textLabel.lastChild.data=this.files[0].name
       });
-
 
       //SET PRIVATE KEY
 
