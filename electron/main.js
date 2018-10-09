@@ -3,6 +3,7 @@ const app = electron.app;
 const BrowserWindow = electron.BrowserWindow;
 
 
+
 var mainWindow = null;
 
 app.on('window-all-closed', function() {
@@ -24,12 +25,13 @@ app.on('ready', function() {
       height: 600,
       webPreferences: {
         nodeIntegration: false,
-        preload: './preload.js'
+        preload: './renderer.js'
       }
     });
     // mainWindow.loadURL('file://' + __dirname + '/index.html');
     mainWindow.loadURL('http://127.0.0.1:1337/');
     // mainWindow.webContents.openDevTools();
+    // mainWindow.setMenu(null)
     mainWindow.on('closed', function() {
       mainWindow = null;
       subpy.kill('SIGINT');
