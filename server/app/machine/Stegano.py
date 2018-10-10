@@ -1,5 +1,5 @@
-import SteganoText as ST
-import SteganoImage as SI
+from SteganoImage import SteganoImage
+from SteganoText import SteganoText
 import os
 
 class Stegano():
@@ -8,8 +8,8 @@ class Stegano():
 		pass
 
 	def save_text_image(self,textpath,imagepath):
-		si = SI.SteganoImage(imagepath)
-		st = ST.SteganoText()
+		si = SteganoImage(imagepath)
+		st = SteganoText()
 
 		content = st.read(textpath)
 		pixels = si.get_pixels()
@@ -47,7 +47,7 @@ class Stegano():
 		os.remove(textpath)
 
 	def expand_image(self,imagepath,textpath):
-		si = SI.SteganoImage(imagepath)
+		si = SteganoImage(imagepath)
 		pixels = si.get_pixels()
 		header = si.get_header()
 
@@ -64,14 +64,14 @@ class Stegano():
 			text=text[:header]
 		content = text[si.headersize:]
 
-		st = ST.SteganoText()
+		st = SteganoText()
 		st.binary_to_content(content)
 		st.save(textpath)
 
 def main():
 	stegano = Stegano()
-	# stegano.save_text_image("../../uploads/pesan.txt","../../uploads/Lenna.png")
-	# stegano.expand_image("../../uploads/Lenna.png","../../uploads/pesan.txt")
+	# stegano.save_text_image("../uploads/pesan.txt","../uploads/Lenna.png")
+	stegano.expand_image("../uploads/Lenna.png","../uploads/pesan.txt")
 
 if __name__ == "__main__":
 	main()

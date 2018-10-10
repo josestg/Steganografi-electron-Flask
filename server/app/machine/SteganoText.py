@@ -56,13 +56,13 @@ class SteganoText():
 
 def main():
 	st = SteganoText()
-	content = st.read("../../uploads/pesan.txt")
+	content = st.read("../uploads/pesan.txt")
 	# header,content = st.expand_fullcontent()
 	# st.binary_to_content(content)
 	# st.save('../../uploads/pesan.txt')
 	# # print('header : ',header)
 	# # print('content : ',content)
-	st.save_to_binary(content,"../../uploads/pesan.txt")
+	st.save_to_binary(content,"../uploads/pesan.txt")
 
 if __name__ == '__main__':
 	main()

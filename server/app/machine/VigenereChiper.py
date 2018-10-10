@@ -54,8 +54,7 @@ class VigenereChiper():
 def main():
 	vc = VigenereChiper("../uploads/pesan.txt")
 	content = vc.read_file()
-	print(content)
-	print(vc.encrypt_text(content,'kunci'))
+	print(vc.decrypt_text(content,'kunci'))
 
 
 if __name__ == "__main__":
