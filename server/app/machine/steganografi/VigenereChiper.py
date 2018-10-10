@@ -2,6 +2,7 @@
 class VigenereChiper():
 
 	def __init__(self,path):
+		print('VIGENERE CHIPER')
 		self.__path = path
 		self.__info = {'filename':path}
 

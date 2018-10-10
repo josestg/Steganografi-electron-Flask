@@ -1,7 +1,7 @@
-
 class SteganoText():
 
 	def __init__(self):
+		print('STEGANO TEXT')
 		self.headersize = 32
 	
 	def read(self,path):
@@ -56,11 +56,13 @@ class SteganoText():
 
 def main():
 	st = SteganoText()
-	content = st.read("../../uploads/sampel.txt")
+	content = st.read("../../uploads/pesan.txt")
 	# header,content = st.expand_fullcontent()
-	# print('header : ',header)
-	# print('content : ',content)
-	st.save_to_binary(content,"../../uploads/full.txt")
+	# st.binary_to_content(content)
+	# st.save('../../uploads/pesan.txt')
+	# # print('header : ',header)
+	# # print('content : ',content)
+	st.save_to_binary(content,"../../uploads/pesan.txt")
 
 if __name__ == '__main__':
 	main()

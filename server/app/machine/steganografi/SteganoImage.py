@@ -1,10 +1,8 @@
-import numpy as np
-import math
-from PIL import Image
-import SteganoText as ST
+
 
 class SteganoImage():
 	def __init__(self,path):
+		print('STEGANO IMAGE')
 		self.__path = path
 		self.__im 	= Image.open(self.__path)
 		self.__pixels = self.__im.load()
@@ -21,7 +19,7 @@ class SteganoImage():
 		return self.__pixels
 
 	def get_nums_bit(self):
-		return 3*self.witdth*self.height
+		return 3*self.width*self.height
 
 	def set_pixel(self,xy,rgb):
 		(R,G,B) = rgb
@@ -56,9 +54,9 @@ class SteganoImage():
 
 
 def save_text_png():
-	si = SteganoImage("../../uploads/min_test.png")
+	si = SteganoImage("../../uploads/Lenna.png")
 	st = ST.SteganoText()
-	content = st.read("../../uploads/full.txt")
+	content = st.read("../../uploads/pesan.txt")
 	pixels = si.get_pixels()
 	#save text to png
 	for i in range(si.width):
@@ -68,8 +66,11 @@ def save_text_png():
 				if len(content)==2:
 					r = content[0]
 					g = content[1]
+					r = r%2
 				elif len(content)==1:
 					r =content[0]
+					g = g%2
+					b = b%2
 				else:
 					break
 			else:	
@@ -80,10 +81,10 @@ def save_text_png():
 			content = content[3:]
 		if(len(content)<=0):
 			break
-	si.save('../../uploads/full.png')
+	si.save('../../uploads/Lennacopy.png')
 
 def expand_image():
-	si = SteganoImage("../../uploads/full.png")
+	si = SteganoImage("../../uploads/Lennacopy.png")
 	pixels = si.get_pixels()
 	header = si.get_header()
 	length = header
@@ -103,7 +104,8 @@ def expand_image():
 
 	st = ST.SteganoText()
 	realtext = st.binary_to_content(content)
-	print(realtext)
+	st.save('../../uploads/pesan2.txt')
+	# print(realtext)
 
 def main():
 	# save_text_png()
