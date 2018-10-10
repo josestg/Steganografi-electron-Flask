@@ -4,6 +4,7 @@ from app import app
 from .machine import vigenerecipher as vc
 from werkzeug import secure_filename
 from flask import render_template,url_for,request,redirect
+from .machine import steganografi as sg
 
 
 # GLOBAL VARIABLES
@@ -35,14 +36,15 @@ def upload():
 		if imagefile and textfile:
 			if allowed_file(imagefile.filename,ALLOWED_IMAGE_EXTENSIONS):
 				imagename = secure_filename(imagefile.filename)
-				imagefile.save(os.path.join(app.config['UPLOAD_FOLDER'],imagename))
+				# imagefile.save(os.path.join(app.config['UPLOAD_FOLDER'],imagename))
 			else:
 				Log = "Extention Error : Allowed image extention => ({})".format(ALLOWED_IMAGE_EXTENSIONS)
 				ERRORS_LOG.append(Log)
 
 			if allowed_file(textfile.filename,ALLOWED_TEXT_EXTENSIONS):
 				textname = secure_filename(textfile.filename)
-				textfile.save(os.path.join(app.config['UPLOAD_FOLDER'],textname))
+				# textfile.save(os.path.join(app.config['UPLOAD_FOLDER'],textname))
+				decrypt(os.path.join(app.config['UPLOAD_FOLDER'],textname),'THIS KEY')
 			else:
 				Log = "Extention Error : Allowed text extention => ({})".format(ALLOWED_TEXT_EXTENSIONS)
 				ERRORS_LOG.append(Log)
@@ -59,15 +61,28 @@ def upload():
 #END UPLOAD
 
 #VIGENERE
+def encrypt(file,key):
+	content = vc.read_file(file)
+	chiper  = vc.encrypt_text(content,key)
+	vc.save_file(chiper,file)
+	return chiper
+
+def decrypt(file,key):
+	content = vc.read_file(file)
+	plain = vc.decrypt_text(content,key)
+	vc.save_file(plain,file)
+	return plain	
 #END VIGENERE
 
 #LSB
+
 #END LSB
 
 
 @app.route('/')
 def index():
-    return render_template("index.html")
+	return redirect(url_for('about'))
+    # return render_template("index.html",path=os.path.join(app.config['UPLOAD_FOLDER'],'pesan.txt'))
 
 @app.route('/success')
 def success():
@@ -82,5 +97,5 @@ def error():
 
 @app.route('/about')
 def about():
-    return render_template("about.html")
-
+	pixels = sg.get_pixels(os.path.join(app.config['UPLOAD_FOLDER'],'test.png'))
+	return render_template("about.html",pixels=pixels)
