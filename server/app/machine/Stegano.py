@@ -12,9 +12,9 @@ class Stegano():
 		st = SteganoText()
 
 		content = st.read(textpath)
-		pixels = si.get_pixels()
+		pixels = si.pixels
 
-		if(si.get_nums_bit() < len(content)):
+		if(si.numberbits < len(content)):
 			print('Message so Large!')
 			return None
 
@@ -48,8 +48,8 @@ class Stegano():
 
 	def expand_image(self,imagepath,textpath):
 		si = SteganoImage(imagepath)
-		pixels = si.get_pixels()
-		header = si.get_header()
+		pixels = si.pixels
+		header = si.header
 
 		text = ''
 		for i in range(si.width):
@@ -68,10 +68,4 @@ class Stegano():
 		st.binary_to_content(content)
 		st.save(textpath)
 
-def main():
-	stegano = Stegano()
-	# stegano.save_text_image("../uploads/pesan.txt","../uploads/Lenna.png")
-	stegano.expand_image("../uploads/Lenna.png","../uploads/pesan.txt")
-
-if __name__ == "__main__":
-	main()
+#end
