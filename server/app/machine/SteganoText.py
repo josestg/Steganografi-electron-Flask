@@ -1,24 +1,32 @@
 class SteganoText():
 
 	def __init__(self):
-		print('STEGANO TEXT')
 		self.headersize = 32
 	
 	def read(self,path):
-		self.__file = open(path,'r')
-		self.__content = self.__file.read()
-		self.__file.close()
+		try:
+			self.__file = open(path,'r')
+			self.__content = self.__file.read()
+			self.__file.close()
+			return self.__content
+		except FileNotFoundError as e:
+			print(e)
+
+	@property
+	def content(self):
 		return self.__content
 
+	@content.setter
 	def set_content(self,content):
 		self.__content = content
-	def get_content(self):
-		return self.__content
 
 	def save(self,path):
-		file = open(path,'w')
-		file.write(self.__content)
-		file.close()
+		try:
+			file = open(path,'w')
+			file.write(self.content)
+			file.close()
+		except FileNotFoundError as e:
+			print(e)
 
 	def get_binary_tape(self,content):
 		binarytape = ''
