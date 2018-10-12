@@ -1,41 +1,97 @@
-from .VigenereChiper import VigenereChiper
-from .SteganoText import SteganoText
-from .Stegano import Stegano
 import os
+import stegano as stg
+
+def xorbittape(key,lenght):
+	#xor operation
+	bbs  = stg.BBS()
+	# # generate seed with odd ord(char of key)
+	s = sum(list(map(lambda x: x if x%2==1 else 0, [ord(e) for e in key])))
+	bbs.seed(s)
+	# # build bits tape , where len(bits) = len(content)
+	xortape=''
+	while(len(xortape)<lenght):
+		xortape+=bbs.rand(0,lenght)
+	return xortape
 
 ## TEXT + IMAGE -> STEGANOIMAGE
-def put_txt_to_img(data):
+def merge(data):
+
 	text = os.path.join(data['basepath'],data['txtname'])
 	img  = os.path.join(data['basepath'],data['imgname'])
-
 	key = data['key']
 	
-	#Vigenere Process
-	vc = VigenereChiper()
+	# Vigenere Process : Encrypt Message
+	vc = stg.Vigenere()
 	content = vc.read(text)
-	vc.encrypt(content,key)
-	vc.save(text)
+	content = vc.encrypt(content,key)
 
-	## convert content to binary and save to the same file
-	st = SteganoText()
-	content = st.read(text)
-	st.save_to_binary(content,text)
+	st = stg.Text()
+	# double encrypt ( vigenere + xor )
+	if data['encrypt'] :	
+		# xor only content wit key
+		bintape = st.get_binary_tape(content)
+		#xor bitwise content and random xortape
+		xortape = xorbittape(key,len(bintape))
+		xorresult=''
+		for x,y in zip(bintape,xortape):
+			xorresult += str(int(x)^int(y))
+		st.ext = text # header need extentions
+		st.set_header(xorresult)
+		st.save(text)
+	else:
+		print("NO XOR")
+		## convert content to binary and save to the same file
+		st.save_to_binary(content,text)
 
-	## put binary content from text file to binary pixels of image file
-	stegano = Stegano()
-	stegano.save_text_image(text,img)
+	# put binary content from text file to binary pixels of image file
+	stegano = stg.Stegano()
+	stegano.merge(text,img)
 
 ## STEGANOIMAGE -> TEXT + IMAGE 
-def get_txt_from_img(data):
+def expand(data):
 	key = data['key']
-	text = os.path.join(data['basepath'],data['txtname'])
+	text = data['newname']
 	img  = os.path.join(data['basepath'],data['imgname'])
 
-	stegano = Stegano()
-	vc = VigenereChiper()
-	stegano.expand_image(img,text)
+	stegano = stg.Stegano()
+	# bintape = bin(header) + bin(extention) + bin(content)
+	bintape = stegano.expand(img)
 
-	# # decrypt 
-	content = vc.read(text)
-	vc.decrypt(content,key)
-	vc.save(text)
+	st = stg.Text()
+	#expand header, extention and content
+	ext 	= bintape[st.headersize : st.headersize+st.extsize]
+	content = bintape[st.headersize + st.extsize :]
+	ext = ''.join([ chr(int(ext[i:i+8],2)) for i in range(0,24,8) ])
+	textpath = os.path.join(data['basepath'],data['newname']+'.'+ext)
+
+	# double decrypt ( vigenere - xor )
+	if data['encrypt'] :
+		xortape = xorbittape(key,len(content))
+		xorresult=''
+		for x,y in zip(content,xortape):
+			xorresult += str(int(x)^int(y))
+		content = xorresult
+		print("YES XOR")
+
+	#convert binary to chiper content
+	chiper = st.binary_to_content(content)
+	# decrypt 
+	vc = stg.Vigenere()
+	vc.decrypt(chiper,key)
+	vc.save(textpath)
+
+
+
+def main():
+	data = {
+		'basepath':'./test/',
+		'imgname':'Lenna.png',
+		'txtname':'message.txt',
+		'key':'kunci',
+		'encrypt':False,
+		'newname':"message"
+	}
+	expand(data)
+
+if __name__ == '__main__':
+	main()
