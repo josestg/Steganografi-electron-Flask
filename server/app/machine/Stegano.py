@@ -1,6 +1,7 @@
-from SteganoImage import SteganoImage
-from SteganoText import SteganoText
+from .SteganoImage import SteganoImage
+from .SteganoText import SteganoText
 import os
+import numpy as np
 
 class Stegano():
 
@@ -46,7 +47,7 @@ class Stegano():
 		si.save(imagepath)
 		os.remove(textpath)
 
-	def expand_image(self,imagepath,textpath):
+	def expand_image(self,imagepath,outname):
 		si = SteganoImage(imagepath)
 		pixels = si.pixels
 		header = si.header
@@ -60,12 +61,21 @@ class Stegano():
 					break
 			if header<=0:
 				break
+
 		if header<0:
 			text=text[:header]
-		content = text[si.headersize:]
+
+		ext = text[si.headersize : si.headersize+si.extsize]
+		content = text[si.headersize + si.extsize :]
+
+		ext = ''.join([ chr(int(ext[i:i+8],2)) for i in range(0,24,8) ])
 
 		st = SteganoText()
+		basepath = imagepath.split('/')[:-1]
+		basepath = '/'.join(basepath)
+		textpath = basepath+'/'+outname+'.'+ext
 		st.binary_to_content(content)
 		st.save(textpath)
+		return textpath
 
 #end

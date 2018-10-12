@@ -2,8 +2,8 @@
 {% block title %}Home{% endblock %}
 {% block body %}
 <div class="container">
-		
-	<form class="was-validated" method=POST enctype=multipart/form-data action="{{ url_for('upload') }}">
+
+	<form class="was-validated" method=POST enctype=multipart/form-data action="{{ url_for('upload_file') }}">
 		<div class="row mb-4">
 			<div class="col-md-4">  
 			  <div class="custom-file mb-3">
@@ -36,9 +36,10 @@
 		<div class="col-md-6 col-sm-12 mb-4">
 
 			<div class="card" style="width: 80;">
-			  <img class="card-img-top" src="{{ url_for('static', filename='assets/noimage.png') }}" alt="Card image cap" id="imageViewOriginal">
+			  <img class="card-img-top" src="{{ url_for('static', filename='assets/Lenna.png') }}" alt="Card image cap" id="imageViewOriginal">
 			  <div class="card-body">
 			  	<div class="text-center">
+			  		<a href="{{ url_for('static', filename='assets/Lenna.png') }}">Download</a>
 					<h5>ORIGINAL IMAGE</h5>
 			  	</div>
 

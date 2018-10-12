@@ -5,34 +5,34 @@ from Stegano import Stegano
 ## TEXT + IMAGE -> STEGANOIMAGE
 
 ## get files and private key if given from app
-image = "../uploads/Lenna.png"
-text = "../uploads/pesan.txt"
-key =  "thisisakey"
+image = "../static/assets/Lenna.png"
+text = "../static/assets/test.txt"
+key =  "kunci"
 
 # Instances
 vc = VigenereChiper()
 st = SteganoText()
 stegano = Stegano()
 
-# ## convert content text file to chiper and save to uploads directory
+## convert content text file to chiper and save to uploads directory
 # content = vc.read(text)
 # vc.encrypt(content,key)
 # vc.save(text)
 
-# ## convert chiper content to binary content and save to the same file
+## convert chiper content to binary content and save to the same file
 # content = st.read(text)
 # st.save_to_binary(content,text)
 
-# ## put binary content from text file to binary pixels of image file
+## put binary content from text file to binary pixels of image file
 # stegano.save_text_image(text,image)
 
 ## STEGANOIMAGE -> TEXT + IMAGE
 
 # get text from image and save to originalfilename
 
-stegano.expand_image(image,"../uploads/pesan.txt")
+out = stegano.expand_image(image,"inipesan")
 
-# # decrypt 
-content = vc.read(text)
+# # # decrypt 
+content = vc.read(out)
 vc.decrypt(content,key)
-vc.save(text)
+vc.save(out)

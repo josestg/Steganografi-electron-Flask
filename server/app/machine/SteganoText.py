@@ -2,22 +2,31 @@ class SteganoText():
 
 	def __init__(self):
 		self.headersize = 32
+		self.extsize = 24
 	
 	def read(self,path):
 		try:
 			self.__file = open(path,'r')
 			self.__content = self.__file.read()
 			self.__file.close()
+			self.ext = path
 			return self.__content
 		except FileNotFoundError as e:
 			print(e)
+	@property
+	def ext(self):
+		return self._ext
+
+	@ext.setter
+	def ext(self,path):
+		self.__ext = path.split('/')[-1].split('.')[-1]
 
 	@property
 	def content(self):
 		return self.__content
 
 	@content.setter
-	def set_content(self,content):
+	def content(self,content):
 		self.__content = content
 
 	def save(self,path):
@@ -35,8 +44,10 @@ class SteganoText():
 		return binarytape
 
 	def set_header(self,bintape):
-		header = '{0:032b}'.format( int(len(bintape))+self.headersize) 
-		fullcontent = header + bintape
+		total = int(len(bintape))+self.headersize+self.extsize
+		header = '{0:032b}'.format(total) 
+		ext = self.get_binary_tape(self.__ext)
+		fullcontent = header + ext + bintape
 		self.__content = fullcontent
 
 	def save_to_binary(self,content,path):
@@ -56,21 +67,24 @@ class SteganoText():
 	def expand_fullcontent(self):
 		fullcontent = self.__content
 		header = fullcontent[0:self.headersize]
-		content = fullcontent[self.headersize:]
+		ext = fullcontent[self.headersize:self.extsize+self.headersize]
+		content = fullcontent[self.headersize+self.extsize:]
 		header = int(header,2)
-		return header,content
+		return header,ext,content
 
 
 
 def main():
 	st = SteganoText()
-	content = st.read("../uploads/pesan.txt")
+	content = st.read("../static/assets/test.txt")
 	# header,content = st.expand_fullcontent()
 	# st.binary_to_content(content)
-	# st.save('../../uploads/pesan.txt')
+	# st.save('../../static/assets/test.txt')
 	# # print('header : ',header)
 	# # print('content : ',content)
-	st.save_to_binary(content,"../uploads/pesan.txt")
+	# st.save_to_binary(content,"../static/assets/test.txt")
+	x,y,z = st.expand_fullcontent()
+	print(x,' ',y,' ',z)
 
 if __name__ == '__main__':
 	main()

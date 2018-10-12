@@ -10,6 +10,7 @@ class SteganoImage():
 			self.__pixels = self.__im.load()
 			self.width,self.height = self.__im.size
 			self.headersize = 32
+			self.extsize = 24
 		except FileNotFoundError as e:
 			raise e
 
@@ -56,7 +57,8 @@ class SteganoImage():
 	@property
 	def header(self):
 		header = ''
-		n = math.ceil(self.headersize/3)
+		total = self.headersize
+		n = math.ceil(total/3)
 		for i in range(n):
 			header+=''.join([str(e) for e in self.get_lsb(self.__pixels[0,i])])
 		return int(header[:self.headersize],2)
